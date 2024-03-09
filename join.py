@@ -1,29 +1,25 @@
-
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 
 import sqlite3
 
+
 class JoinForm(QDialog):
     def __init__(self, widget):
         super(JoinForm, self).__init__()
-        loadUi("join.ui", self)
+        loadUi("templates/join.ui", self)
         self.widget = widget
-
         self.confirmedId = None
-
         self.pwEdit.setEchoMode(QtWidgets.QLineEdit.Password)
         self.confirmEdit.setEchoMode(QtWidgets.QLineEdit.Password)
-
         self.checkBtn.clicked.connect(self.check_id)
         self.enrollBtn.clicked.connect(self.enroll_user)
         self.cancleBtn.clicked.connect(self.cancle)
 
-
     # id 중복 체크
     def check_id(self):
-        conn = sqlite3.connect('employee.db')
+        conn = sqlite3.connect('data/employee.db')
         cur = conn.cursor()
         id = self.idEdit.text()
         print(id)
@@ -35,9 +31,8 @@ class JoinForm(QDialog):
             self.chLabel.setText("This ID can be used")
         else:
             self.chLabel.setText("This ID already exists")
-
+            
         conn.close()
-
 
     def enroll_user(self):
         id = self.idEdit.text()
@@ -66,7 +61,6 @@ class JoinForm(QDialog):
                 self.reset_ui()
                 self.widget.setCurrentIndex(self.widget.currentIndex() - 1)
 
-
     def cancle(self):
         self.reset_ui()
         self.widget.setCurrentIndex(self.widget.currentIndex() - 1)
@@ -85,6 +79,3 @@ class JoinForm(QDialog):
             QCloseEvent.accept()
         else:
             QCloseEvent.ignore()
-
-
-

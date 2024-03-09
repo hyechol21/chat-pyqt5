@@ -41,7 +41,7 @@ background-color:qlineargradient(spread:pad, x1:0.112, y1:0.107318, x2:1, y2:0.9
 color: rgb(52, 52, 52);</string>
     </property>
     <property name="text">
-     <string>4IND</string>
+     <string>LIVEMATE</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

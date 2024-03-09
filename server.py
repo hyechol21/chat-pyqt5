@@ -75,10 +75,8 @@ class HandleClient(threading.Thread):
 
 
 if __name__ == "__main__":
-    # HOST = socket.gethostname()
-    # IP = socket.gethostbyname(HOST) # 192.168.0.69
-    SERVER = "192.168.0.69"
-    PORT = 5050
+    SERVER = "IP Address"
+    PORT = 5080
     ADDR = (SERVER, PORT)
     HEADER = 64
     FORMAT = 'utf-8'

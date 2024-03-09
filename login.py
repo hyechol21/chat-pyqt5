@@ -10,14 +10,13 @@ from PyQt5.QtWidgets import *
 class LoginForm(QDialog):
     def __init__(self, widget):
         super(LoginForm, self).__init__()
-        loadUi("login.ui", self)
+        loadUi("templates/login.ui", self)
         self.widget = widget
 
         self.pwEdit.setEchoMode(QtWidgets.QLineEdit.Password)  # 패스워드 모드
 
         self.loginBtn.clicked.connect(self.goto_login)
         self.joinBtn.clicked.connect(self.goto_join)
-
 
     def goto_login(self):
         print("로그인 완료")
@@ -26,11 +25,9 @@ class LoginForm(QDialog):
 
         if len(user_id)==0 or len(user_pw)==0:
             self.chLabel.setText("Please input all fields. ")
-
         else:
-            conn = sqlite3.connect("employee.db")
+            conn = sqlite3.connect("data/employee.db")
             cur = conn.cursor()
-
             cur.execute('SELECT * FROM employee_info WHERE user_id=?', (user_id,))
             try:
                 if user_pw == cur.fetchone()[1]:
@@ -39,10 +36,8 @@ class LoginForm(QDialog):
                     self.main_obj = main.MainForm(user_id)
                     self.main_obj.exec() # 창이 끝날때까지 기다리기
                     self.widget.show()
-
             except:
                 self.chLabel.setText("Not correct information")
-
 
     # 회원가입 화면 띄우기
     def goto_join(self):
@@ -67,8 +62,6 @@ class LoginForm(QDialog):
     #         QCloseEvent.ignore()
 
 
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = QStackedWidget()
@@ -80,7 +73,7 @@ if __name__ == "__main__":
     widget.addWidget(join_obj)
 
 
-    widget.setWindowTitle("4IND")
+    widget.setWindowTitle("LIVEMATE")
     widget.setFixedWidth(600)
     widget.setFixedHeight(800)
     widget.show()

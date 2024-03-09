@@ -8,20 +8,18 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
-
 # from PyQt5.QtGui import QPixmap, QImage
 # from PyQt5.QtCore import Qt, QThread, pyqtSignal, pyqtSlot
 
 
 class MainForm(QMainWindow):
-
     def __init__(self, id):
         super(MainForm, self).__init__()
-        loadUi("main.ui", self)
+        loadUi("templates/main.ui", self)
 
         self.worker_id = id
-        self.server = "192.168.0.69"
-        self.port = 5050
+        self.server = "IP Address"
+        self.port = 5080
         self.header = 64
         self.format = 'utf-8'
         self.connected = True
@@ -40,7 +38,7 @@ class MainForm(QMainWindow):
         self.feed = None
 
         # 메인창 설정
-        self.setWindowTitle("4IND")
+        self.setWindowTitle("LIVEMATE")
         self.setFixedWidth(1200)
         self.setFixedHeight(800)
         self.show()
@@ -98,19 +96,13 @@ class MainForm(QMainWindow):
     def closeEvent(self, QCloseEvent):
         ans = QMessageBox.question(self, "종료 확인", "종료 하시겠습니까?",
                                    QMessageBox.Yes | QMessageBox.No, QMessageBox.No)  # 마지막 값은 기본값
-
         if ans == QMessageBox.Yes:  # Yes 클릭시 종료
             self.send(self.DISCONNECTED_MESSAGE)  # 종료시 연결종료 메시지 전송
             time.sleep(0.5)
-
             self.c_sock.close()
             QCloseEvent.accept()
         else:
             QCloseEvent.ignore()
-
-
-# class VideoOutput():
-#     def __init__(self):
 
 
 class VideoInput(QThread):
@@ -128,7 +120,6 @@ class VideoInput(QThread):
         self.cap = cv2.VideoCapture(self.url)
 
     def run(self):
-        # url = 'rtsp://admin:4ind331%23@192.168.0.242/profile2/media.smp'
         if not self.cap.isOpened():
             print("비디오 장치 연결 오류")
             self.ThreadActive = False
@@ -137,30 +128,15 @@ class VideoInput(QThread):
             ret, frame = self.cap.read()
             if ret:
                 Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                FlippedImage = cv2.flip(Image, 1)  # 수직축 뒤집음
+                FlippedImage = Image.copy()
+                # FlippedImage = cv2.flip(Image, 0)  # 수직축 뒤집음
                 # Q 이미지로 변환
                 ConvertToQtFormat = QImage(FlippedImage.data, FlippedImage.shape[1], FlippedImage.shape[0],
                                            QImage.Format_RGB888)
-                Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)  # 종횡비 유지하면서 스케일
+                Pic = ConvertToQtFormat.scaled(480, 300, Qt.KeepAspectRatio)  # 종횡비 유지하면서 스케일
                 self.ImageUpdate.emit(Pic, self.idx)
 
+            time.sleep(0.001)
     # def stop(self):
     #     self.ThreadActive = False
     #     self.quit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
