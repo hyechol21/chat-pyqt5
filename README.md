@@ -1,4 +1,4 @@
-### Chat & Video Streming Program
+## Chat & Video Streming Program
 * server: server.py
 * client: login.py
 
